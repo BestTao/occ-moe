@@ -19,7 +19,7 @@ Person re-identification (ReID) is crucial for cross-camera target retrieval, ye
 
 ### Qualitative Results
 
-![Model Architecture](images/architecture.png)
+![Model Architecture](images/整体架构6.jpg)
 *Figure 1: Overall architecture of our MoE-ViT framework*
 
 ![Visual Results](images/qualitative_results.png)
