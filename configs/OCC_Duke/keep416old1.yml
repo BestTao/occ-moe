@@ -1,0 +1,658 @@
+Loading config from: configs/OCC_Duke/vit_z_base.yml
+DATALOADER:
+  NUM_INSTANCE: 4
+  NUM_WORKERS: 8
+  SAMPLER: softmax_triplet
+DATASETS:
+  NAMES: occ_duke
+  ROOT_DIR: /data/zht/learn_pytorch/megaz-reid-master/megaz-reid-master/data
+ENCODER:
+  attention_dropout_rate: 0.1
+  mlp_dim: 8
+  num_heads: 12
+  num_layers: 12
+INPUT:
+  AUG_TYPES: ['occlusion']
+  OCC_TYPE: instance_mask
+  OCC_TYPES: ['instance_mask', 'img_block']
+  OCC_TYPES_RATIO: [0.7, 0.1]
+  PADDING: 10
+  PIXEL_MEAN: [0.5, 0.5, 0.5]
+  PIXEL_STD: [0.5, 0.5, 0.5]
+  PROB: 0.5
+  RE_PROB: 0.5
+  SEG_CFG: COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_1x.yaml
+  SIZE_TEST: [256, 128]
+  SIZE_TRAIN: [256, 128]
+MODEL:
+  ATT_DROP_RATE: 0.0
+  BRANCH_BLOCKS: 0
+  COS_LAYER: False
+  DEVICE: cuda
+  DEVICE_ID: 0
+  DEVIDE_LENGTH: 4
+  DIST_TRAIN: False
+  DROP_OUT: 0.0
+  DROP_PATH: 0.1
+  EXTRA_OCC_BLOCKS: 3
+  FIX_ALPHA: 0.0
+  HEAD_DIV_LOSS_WEIGHT: 0.1
+  HEAD_ENHANCE: True
+  HEAD_SUP: True
+  ID_LOSS_TYPE: softmax
+  ID_LOSS_WEIGHT: 1.0
+  IFRC: True
+  IFRC_HEAD_NUM: 12
+  IFRC_LOSS_TYPE: l2dist
+  IFRC_LOSS_WEIGHT: 0.01
+  IFRC_TARGET: feat
+  IF_LABELSMOOTH: off
+  IF_WITH_CENTER: no
+  JPM: True
+  LAST_STRIDE: 1
+  METRIC_LOSS_TYPE: triplet
+  NAME: transformer
+  NECK: bnneck
+  NO_MARGIN: True
+  OCC_ALIGN_BOUND: False
+  OCC_ALIGN_BTM: False
+  OCC_AUG: False
+  OCC_AWARE: True
+  OCC_LOSS_WEIGHT: 1.0
+  OCC_MARGIN: 0.2
+  OCC_RATIO: [0.25, 0.35]
+  OCC_TYPE: 
+  OCC_TYPES: []
+  OCC_TYPES_RATIO: []
+  OCC_ULRD: [0.0, 0.1, 0.1, 0.8]
+  PATCH_ALIGN_OCC: True
+  PRETEXT: feat
+  PRETRAIN_CHOICE: imagenet
+  PRETRAIN_PATH: /data1/zht/Models/TransReid/jx_vit_base_p16_224-80ecf9dd.pth
+  RE_ARRANGE: True
+  SAMPLE_HEAD_SUP: False
+  SHIFT_NUM: 5
+  SHUFFLE_GROUP: 2
+  SIE_CAMERA: True
+  SIE_COE: 3.0
+  SIE_VIEW: False
+  STRIDE_SIZE: [16, 16]
+  TRANSFORMER_TYPE: vit_base_patch16_224_TransReID
+  TRIPLET_LOSS_WEIGHT: 1.0
+  TWO_BRANCHED: True
+  USE_DECODER_FEAT: 
+  ZZWEXP: True
+  ZZWTRY: False
+  depth: 12
+  embed_dim: 768
+  mlp_ratio: 4
+  moeori_LOSS_WEIGHT: 1.0
+  qkv_bias: True
+MOE:
+  group_size: 4
+  layers: [5, 8, 11]
+  num_experts: 4
+  router:
+    dispatcher:
+      batch_priority: False
+      bfloat16: False
+      capacity: 2
+      name: einsum
+    importance_loss_weight: 0.02
+    load_loss_weight: 0.02
+    noise_std: 0.001
+    num_selected_experts: 1
+OUTPUT_DIR: /data/zht/learn_pytorch/megaz-reid-master/megaz-reid-master/output/moe/416old1
+SOLVER:
+  BASE_LR: 0.016
+  BIAS_LR_FACTOR: 2
+  CENTER_LOSS_WEIGHT: 0.0005
+  CENTER_LR: 0.5
+  CHECKPOINT_PERIOD: 10
+  COSINE_MARGIN: 0.5
+  COSINE_SCALE: 30
+  EVAL_PERIOD: 5
+  GAMMA: 0.1
+  IMS_PER_BATCH: 64
+  LARGE_FC_LR: False
+  LOG_PERIOD: 50
+  MARGIN: 0.3
+  MAX_EPOCHS: 200
+  MOMENTUM: 0.9
+  OCC_PRED_FROZEN: 60
+  OPTIMIZER_NAME: SGD
+  SEED: 1234
+  STEPS: (40, 70)
+  WARMUP_EPOCHS: 5
+  WARMUP_FACTOR: 0.01
+  WARMUP_METHOD: linear
+  WEIGHT_DECAY: 0.0001
+  WEIGHT_DECAY_BIAS: 0.0001
+TEST:
+  EVAL: True
+  FEAT_NORM: yes
+  IMS_PER_BATCH: 256
+  NECK_FEAT: before
+  RE_RANKING: False
+  USE_FEAT: dec
+  WEIGHT: ./weights/occduke_baseline.pth
+Config after merging from file:
+DATALOADER:
+  NUM_INSTANCE: 4
+  NUM_WORKERS: 8
+  SAMPLER: softmax_triplet
+DATASETS:
+  NAMES: occ_duke
+  ROOT_DIR: /data/zht/learn_pytorch/megaz-reid-master/megaz-reid-master/data
+ENCODER:
+  attention_dropout_rate: 0.1
+  mlp_dim: 8
+  num_heads: 12
+  num_layers: 12
+INPUT:
+  AUG_TYPES: ['occlusion']
+  OCC_TYPE: instance_mask
+  OCC_TYPES: ['instance_mask', 'img_block']
+  OCC_TYPES_RATIO: [0.7, 0.1]
+  PADDING: 10
+  PIXEL_MEAN: [0.5, 0.5, 0.5]
+  PIXEL_STD: [0.5, 0.5, 0.5]
+  PROB: 0.5
+  RE_PROB: 0.5
+  SEG_CFG: COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_1x.yaml
+  SIZE_TEST: [256, 128]
+  SIZE_TRAIN: [256, 128]
+MODEL:
+  ATT_DROP_RATE: 0.0
+  BRANCH_BLOCKS: 0
+  COS_LAYER: False
+  DEVICE: cuda
+  DEVICE_ID: 0
+  DEVIDE_LENGTH: 4
+  DIST_TRAIN: False
+  DROP_OUT: 0.0
+  DROP_PATH: 0.1
+  EXTRA_OCC_BLOCKS: 3
+  FIX_ALPHA: 0.0
+  HEAD_DIV_LOSS_WEIGHT: 0.1
+  HEAD_ENHANCE: True
+  HEAD_SUP: True
+  ID_LOSS_TYPE: softmax
+  ID_LOSS_WEIGHT: 1.0
+  IFRC: True
+  IFRC_HEAD_NUM: 12
+  IFRC_LOSS_TYPE: l2dist
+  IFRC_LOSS_WEIGHT: 0.01
+  IFRC_TARGET: feat
+  IF_LABELSMOOTH: off
+  IF_WITH_CENTER: no
+  JPM: True
+  LAST_STRIDE: 1
+  METRIC_LOSS_TYPE: triplet
+  NAME: transformer
+  NECK: bnneck
+  NO_MARGIN: True
+  OCC_ALIGN_BOUND: False
+  OCC_ALIGN_BTM: False
+  OCC_AUG: False
+  OCC_AWARE: True
+  OCC_LOSS_WEIGHT: 1.0
+  OCC_MARGIN: 0.2
+  OCC_RATIO: [0.25, 0.35]
+  OCC_TYPE: 
+  OCC_TYPES: []
+  OCC_TYPES_RATIO: []
+  OCC_ULRD: [0.0, 0.1, 0.1, 0.8]
+  PATCH_ALIGN_OCC: True
+  PRETEXT: feat
+  PRETRAIN_CHOICE: imagenet
+  PRETRAIN_PATH: /data1/zht/Models/TransReid/jx_vit_base_p16_224-80ecf9dd.pth
+  RE_ARRANGE: True
+  SAMPLE_HEAD_SUP: False
+  SHIFT_NUM: 5
+  SHUFFLE_GROUP: 2
+  SIE_CAMERA: True
+  SIE_COE: 3.0
+  SIE_VIEW: False
+  STRIDE_SIZE: [16, 16]
+  TRANSFORMER_TYPE: vit_base_patch16_224_TransReID
+  TRIPLET_LOSS_WEIGHT: 1.0
+  TWO_BRANCHED: True
+  USE_DECODER_FEAT: 
+  ZZWEXP: True
+  ZZWTRY: False
+  depth: 12
+  embed_dim: 768
+  mlp_ratio: 4
+  moeori_LOSS_WEIGHT: 1.0
+  qkv_bias: True
+MOE:
+  group_size: 4
+  layers: [5, 8, 11]
+  num_experts: 4
+  router:
+    dispatcher:
+      batch_priority: False
+      bfloat16: False
+      capacity: 2
+      name: einsum
+    importance_loss_weight: 0.02
+    load_loss_weight: 0.02
+    noise_std: 0.001
+    num_selected_experts: 1
+OUTPUT_DIR: /data/zht/learn_pytorch/megaz-reid-master/megaz-reid-master/output/moe/416old1
+SOLVER:
+  BASE_LR: 0.016
+  BIAS_LR_FACTOR: 2
+  CENTER_LOSS_WEIGHT: 0.0005
+  CENTER_LR: 0.5
+  CHECKPOINT_PERIOD: 10
+  COSINE_MARGIN: 0.5
+  COSINE_SCALE: 30
+  EVAL_PERIOD: 5
+  GAMMA: 0.1
+  IMS_PER_BATCH: 64
+  LARGE_FC_LR: False
+  LOG_PERIOD: 50
+  MARGIN: 0.3
+  MAX_EPOCHS: 200
+  MOMENTUM: 0.9
+  OCC_PRED_FROZEN: 60
+  OPTIMIZER_NAME: SGD
+  SEED: 1234
+  STEPS: (40, 70)
+  WARMUP_EPOCHS: 5
+  WARMUP_FACTOR: 0.01
+  WARMUP_METHOD: linear
+  WEIGHT_DECAY: 0.0001
+  WEIGHT_DECAY_BIAS: 0.0001
+TEST:
+  EVAL: True
+  FEAT_NORM: yes
+  IMS_PER_BATCH: 256
+  NECK_FEAT: before
+  RE_RANKING: False
+  USE_FEAT: dec
+  WEIGHT: ./weights/occduke_baseline.pth
+Modifying config with command-line opts: ['MODEL.DEVICE_ID', "('2')", 'DATASETS.NAMES', "('occ_duke')"]
+Config after command-line modifications:
+DATALOADER:
+  NUM_INSTANCE: 4
+  NUM_WORKERS: 8
+  SAMPLER: softmax_triplet
+DATASETS:
+  NAMES: occ_duke
+  ROOT_DIR: /data/zht/learn_pytorch/megaz-reid-master/megaz-reid-master/data
+ENCODER:
+  attention_dropout_rate: 0.1
+  mlp_dim: 8
+  num_heads: 12
+  num_layers: 12
+INPUT:
+  AUG_TYPES: ['occlusion']
+  OCC_TYPE: instance_mask
+  OCC_TYPES: ['instance_mask', 'img_block']
+  OCC_TYPES_RATIO: [0.7, 0.1]
+  PADDING: 10
+  PIXEL_MEAN: [0.5, 0.5, 0.5]
+  PIXEL_STD: [0.5, 0.5, 0.5]
+  PROB: 0.5
+  RE_PROB: 0.5
+  SEG_CFG: COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_1x.yaml
+  SIZE_TEST: [256, 128]
+  SIZE_TRAIN: [256, 128]
+MODEL:
+  ATT_DROP_RATE: 0.0
+  BRANCH_BLOCKS: 0
+  COS_LAYER: False
+  DEVICE: cuda
+  DEVICE_ID: 2
+  DEVIDE_LENGTH: 4
+  DIST_TRAIN: False
+  DROP_OUT: 0.0
+  DROP_PATH: 0.1
+  EXTRA_OCC_BLOCKS: 3
+  FIX_ALPHA: 0.0
+  HEAD_DIV_LOSS_WEIGHT: 0.1
+  HEAD_ENHANCE: True
+  HEAD_SUP: True
+  ID_LOSS_TYPE: softmax
+  ID_LOSS_WEIGHT: 1.0
+  IFRC: True
+  IFRC_HEAD_NUM: 12
+  IFRC_LOSS_TYPE: l2dist
+  IFRC_LOSS_WEIGHT: 0.01
+  IFRC_TARGET: feat
+  IF_LABELSMOOTH: off
+  IF_WITH_CENTER: no
+  JPM: True
+  LAST_STRIDE: 1
+  METRIC_LOSS_TYPE: triplet
+  NAME: transformer
+  NECK: bnneck
+  NO_MARGIN: True
+  OCC_ALIGN_BOUND: False
+  OCC_ALIGN_BTM: False
+  OCC_AUG: False
+  OCC_AWARE: True
+  OCC_LOSS_WEIGHT: 1.0
+  OCC_MARGIN: 0.2
+  OCC_RATIO: [0.25, 0.35]
+  OCC_TYPE: 
+  OCC_TYPES: []
+  OCC_TYPES_RATIO: []
+  OCC_ULRD: [0.0, 0.1, 0.1, 0.8]
+  PATCH_ALIGN_OCC: True
+  PRETEXT: feat
+  PRETRAIN_CHOICE: imagenet
+  PRETRAIN_PATH: /data1/zht/Models/TransReid/jx_vit_base_p16_224-80ecf9dd.pth
+  RE_ARRANGE: True
+  SAMPLE_HEAD_SUP: False
+  SHIFT_NUM: 5
+  SHUFFLE_GROUP: 2
+  SIE_CAMERA: True
+  SIE_COE: 3.0
+  SIE_VIEW: False
+  STRIDE_SIZE: [16, 16]
+  TRANSFORMER_TYPE: vit_base_patch16_224_TransReID
+  TRIPLET_LOSS_WEIGHT: 1.0
+  TWO_BRANCHED: True
+  USE_DECODER_FEAT: 
+  ZZWEXP: True
+  ZZWTRY: False
+  depth: 12
+  embed_dim: 768
+  mlp_ratio: 4
+  moeori_LOSS_WEIGHT: 1.0
+  qkv_bias: True
+MOE:
+  group_size: 4
+  layers: [5, 8, 11]
+  num_experts: 4
+  router:
+    dispatcher:
+      batch_priority: False
+      bfloat16: False
+      capacity: 2
+      name: einsum
+    importance_loss_weight: 0.02
+    load_loss_weight: 0.02
+    noise_std: 0.001
+    num_selected_experts: 1
+OUTPUT_DIR: /data/zht/learn_pytorch/megaz-reid-master/megaz-reid-master/output/moe/416old1
+SOLVER:
+  BASE_LR: 0.016
+  BIAS_LR_FACTOR: 2
+  CENTER_LOSS_WEIGHT: 0.0005
+  CENTER_LR: 0.5
+  CHECKPOINT_PERIOD: 10
+  COSINE_MARGIN: 0.5
+  COSINE_SCALE: 30
+  EVAL_PERIOD: 5
+  GAMMA: 0.1
+  IMS_PER_BATCH: 64
+  LARGE_FC_LR: False
+  LOG_PERIOD: 50
+  MARGIN: 0.3
+  MAX_EPOCHS: 200
+  MOMENTUM: 0.9
+  OCC_PRED_FROZEN: 60
+  OPTIMIZER_NAME: SGD
+  SEED: 1234
+  STEPS: (40, 70)
+  WARMUP_EPOCHS: 5
+  WARMUP_FACTOR: 0.01
+  WARMUP_METHOD: linear
+  WEIGHT_DECAY: 0.0001
+  WEIGHT_DECAY_BIAS: 0.0001
+TEST:
+  EVAL: True
+  FEAT_NORM: yes
+  IMS_PER_BATCH: 256
+  NECK_FEAT: before
+  RE_RANKING: False
+  USE_FEAT: dec
+  WEIGHT: ./weights/occduke_baseline.pth
+2025-04-16 06:44:57,938 transreid INFO: Saving model in the path :/data/zht/learn_pytorch/megaz-reid-master/megaz-reid-master/output/moe/416old1
+2025-04-16 06:44:57,938 transreid INFO: Namespace(config_file='configs/OCC_Duke/vit_z_base.yml', opts=['MODEL.DEVICE_ID', "('2')", 'DATASETS.NAMES', "('occ_duke')"], local_rank=0)
+2025-04-16 06:44:57,938 transreid INFO: Loaded configuration file configs/OCC_Duke/vit_z_base.yml
+2025-04-16 06:44:57,938 transreid INFO: 
+MODEL:
+  PRETRAIN_CHOICE: 'imagenet'
+  PRETRAIN_PATH: '/data1/zht/Models/TransReid/jx_vit_base_p16_224-80ecf9dd.pth' 
+  # './pretrained/jx_vit_base_p16_224-80ecf9dd.pth'
+  # PRETRAIN_PATH: '../../pretrain/mae_pretrain_vit_base.pth'
+  METRIC_LOSS_TYPE: 'triplet'
+  IF_LABELSMOOTH: 'off'
+  IF_WITH_CENTER: 'no'
+  NAME: 'transformer'
+  NO_MARGIN: True
+  DEVICE_ID: ('0')
+  TRANSFORMER_TYPE: 'vit_base_patch16_224_TransReID'
+  STRIDE_SIZE: [16, 16]
+  SIE_CAMERA: True
+  SIE_COE: 3.0
+  JPM: True
+  # 是否需要重新排序
+  RE_ARRANGE: True
+
+  ZZWEXP: True
+  DIST_TRAIN: False
+  TWO_BRANCHED: True
+
+  OCC_AUG: False
+  OCC_RATIO: [0.25, 0.35]
+  OCC_MARGIN: 0.2
+  OCC_ULRD: [0.0, 0.1, 0.1, 0.8]
+  OCC_ALIGN_BOUND: False
+  OCC_ALIGN_BTM: False
+
+  OCC_AWARE: True
+  OCC_LOSS_WEIGHT: 1.0
+  EXTRA_OCC_BLOCKS: 3
+  FIX_ALPHA: 0.
+
+  IFRC: True
+  BRANCH_BLOCKS: 0
+  IFRC_TARGET: 'feat'
+  IFRC_LOSS_TYPE: 'l2dist'
+  IFRC_LOSS_WEIGHT: 0.01
+  IFRC_HEAD_NUM: 12
+  # USE_DECODER_FEAT: 'glb_n_loc'
+
+  HEAD_ENHANCE: True
+  HEAD_DIV_LOSS_WEIGHT: 0.1
+
+  HEAD_SUP: True
+
+  SAMPLE_HEAD_SUP: False
+
+
+INPUT:
+  SIZE_TRAIN: [256, 128]
+  SIZE_TEST: [256, 128]
+  PROB: 0.5 # random horizontal flip
+  RE_PROB: 0.5 # random erasing
+  PADDING: 10
+  PIXEL_MEAN: [0.5, 0.5, 0.5]
+  PIXEL_STD: [0.5, 0.5, 0.5]
+  # zzw
+  AUG_TYPES: ['occlusion']
+  OCC_TYPES: [ 'instance_mask', 'img_block' ]
+  OCC_TYPES_RATIO: [ 0.7, 0.1 ]
+
+DATASETS:
+  NAMES: ('occ_duke')
+  ROOT_DIR: ('/data/zht/learn_pytorch/megaz-reid-master/megaz-reid-master/data')
+
+DATALOADER:
+  SAMPLER: 'softmax_triplet'
+  NUM_INSTANCE: 4
+  NUM_WORKERS: 8
+
+SOLVER:
+  OPTIMIZER_NAME: 'SGD'
+  MAX_EPOCHS: 200
+  BASE_LR: 0.016
+  IMS_PER_BATCH: 64
+  WARMUP_METHOD: 'linear'
+  LARGE_FC_LR: False
+  CHECKPOINT_PERIOD: 10
+  LOG_PERIOD: 50
+  EVAL_PERIOD: 5
+  WEIGHT_DECAY:  1e-4
+  WEIGHT_DECAY_BIAS: 1e-4
+  BIAS_LR_FACTOR: 2
+  OCC_PRED_FROZEN: 60
+
+TEST:
+  EVAL: True
+  IMS_PER_BATCH: 256
+  RE_RANKING: False
+  WEIGHT: './weights/occduke_baseline.pth'
+  NECK_FEAT: 'before'
+  FEAT_NORM: 'yes'
+  USE_FEAT: 'dec'
+
+OUTPUT_DIR: '/data/zht/learn_pytorch/megaz-reid-master/megaz-reid-master/output/moe/416old1'
+
+
+
+2025-04-16 06:44:57,938 transreid INFO: Running with config:
+DATALOADER:
+  NUM_INSTANCE: 4
+  NUM_WORKERS: 8
+  SAMPLER: softmax_triplet
+DATASETS:
+  NAMES: occ_duke
+  ROOT_DIR: /data/zht/learn_pytorch/megaz-reid-master/megaz-reid-master/data
+ENCODER:
+  attention_dropout_rate: 0.1
+  mlp_dim: 8
+  num_heads: 12
+  num_layers: 12
+INPUT:
+  AUG_TYPES: ['occlusion']
+  OCC_TYPE: instance_mask
+  OCC_TYPES: ['instance_mask', 'img_block']
+  OCC_TYPES_RATIO: [0.7, 0.1]
+  PADDING: 10
+  PIXEL_MEAN: [0.5, 0.5, 0.5]
+  PIXEL_STD: [0.5, 0.5, 0.5]
+  PROB: 0.5
+  RE_PROB: 0.5
+  SEG_CFG: COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_1x.yaml
+  SIZE_TEST: [256, 128]
+  SIZE_TRAIN: [256, 128]
+MODEL:
+  ATT_DROP_RATE: 0.0
+  BRANCH_BLOCKS: 0
+  COS_LAYER: False
+  DEVICE: cuda
+  DEVICE_ID: 2
+  DEVIDE_LENGTH: 4
+  DIST_TRAIN: False
+  DROP_OUT: 0.0
+  DROP_PATH: 0.1
+  EXTRA_OCC_BLOCKS: 3
+  FIX_ALPHA: 0.0
+  HEAD_DIV_LOSS_WEIGHT: 0.1
+  HEAD_ENHANCE: True
+  HEAD_SUP: True
+  ID_LOSS_TYPE: softmax
+  ID_LOSS_WEIGHT: 1.0
+  IFRC: True
+  IFRC_HEAD_NUM: 12
+  IFRC_LOSS_TYPE: l2dist
+  IFRC_LOSS_WEIGHT: 0.01
+  IFRC_TARGET: feat
+  IF_LABELSMOOTH: off
+  IF_WITH_CENTER: no
+  JPM: True
+  LAST_STRIDE: 1
+  METRIC_LOSS_TYPE: triplet
+  NAME: transformer
+  NECK: bnneck
+  NO_MARGIN: True
+  OCC_ALIGN_BOUND: False
+  OCC_ALIGN_BTM: False
+  OCC_AUG: False
+  OCC_AWARE: True
+  OCC_LOSS_WEIGHT: 1.0
+  OCC_MARGIN: 0.2
+  OCC_RATIO: [0.25, 0.35]
+  OCC_TYPE: 
+  OCC_TYPES: []
+  OCC_TYPES_RATIO: []
+  OCC_ULRD: [0.0, 0.1, 0.1, 0.8]
+  PATCH_ALIGN_OCC: True
+  PRETEXT: feat
+  PRETRAIN_CHOICE: imagenet
+  PRETRAIN_PATH: /data1/zht/Models/TransReid/jx_vit_base_p16_224-80ecf9dd.pth
+  RE_ARRANGE: True
+  SAMPLE_HEAD_SUP: False
+  SHIFT_NUM: 5
+  SHUFFLE_GROUP: 2
+  SIE_CAMERA: True
+  SIE_COE: 3.0
+  SIE_VIEW: False
+  STRIDE_SIZE: [16, 16]
+  TRANSFORMER_TYPE: vit_base_patch16_224_TransReID
+  TRIPLET_LOSS_WEIGHT: 1.0
+  TWO_BRANCHED: True
+  USE_DECODER_FEAT: 
+  ZZWEXP: True
+  ZZWTRY: False
+  depth: 12
+  embed_dim: 768
+  mlp_ratio: 4
+  moeori_LOSS_WEIGHT: 1.0
+  qkv_bias: True
+MOE:
+  group_size: 4
+  layers: [5, 8, 11]
+  num_experts: 4
+  router:
+    dispatcher:
+      batch_priority: False
+      bfloat16: False
+      capacity: 2
+      name: einsum
+    importance_loss_weight: 0.02
+    load_loss_weight: 0.02
+    noise_std: 0.001
+    num_selected_experts: 1
+OUTPUT_DIR: /data/zht/learn_pytorch/megaz-reid-master/megaz-reid-master/output/moe/416old1
+SOLVER:
+  BASE_LR: 0.016
+  BIAS_LR_FACTOR: 2
+  CENTER_LOSS_WEIGHT: 0.0005
+  CENTER_LR: 0.5
+  CHECKPOINT_PERIOD: 10
+  COSINE_MARGIN: 0.5
+  COSINE_SCALE: 30
+  EVAL_PERIOD: 5
+  GAMMA: 0.1
+  IMS_PER_BATCH: 64
+  LARGE_FC_LR: False
+  LOG_PERIOD: 50
+  MARGIN: 0.3
+  MAX_EPOCHS: 200
+  MOMENTUM: 0.9
+  OCC_PRED_FROZEN: 60
+  OPTIMIZER_NAME: SGD
+  SEED: 1234
+  STEPS: (40, 70)
+  WARMUP_EPOCHS: 5
+  WARMUP_FACTOR: 0.01
+  WARMUP_METHOD: linear
+  WEIGHT_DECAY: 0.0001
+  WEIGHT_DECAY_BIAS: 0.0001
+TEST:
+  EVAL: True
+  FEAT_NORM: yes
+  IMS_PER_BATCH: 256
+  NECK_FEAT: before
+  RE_RANKING: False
+  USE_FEAT: dec
+  WEIGHT: ./weights/occduke_baseline.pth

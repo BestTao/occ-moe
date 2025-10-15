@@ -1,0 +1,261 @@
+MODEL:
+  PRETRAIN_CHOICE: 'imagenet'
+  PRETRAIN_PATH: '/data1/zht/Models/TransReid/jx_vit_base_p16_224-80ecf9dd.pth'
+  METRIC_LOSS_TYPE: 'triplet'
+  IF_LABELSMOOTH: 'off'
+  IF_WITH_CENTER: 'no'
+  NAME: 'transformer'
+  NO_MARGIN: True
+  DEVICE_ID: ('2')
+  TRANSFORMER_TYPE: 'vit_base_patch16_224_TransReID'
+  STRIDE_SIZE: [16, 16]
+  SIE_CAMERA: True
+  SIE_COE: 3.0                                                                           
+  ZZWEXP: True
+  TRIPLET_LOSS_WEIGHT: 1.0
+  OCC_LOSS_WEIGHT: 1.0
+  IFRC_LOSS_TYPE: 'l2dist'
+  IFRC_LOSS_WEIGHT: 0.01
+  JPM: True
+  RE_ARRANGE: True  # 之前是False
+  OCC_TYPE: 'instance_mask'
+  OCC_TYPES: ['instance_mask', 'img_block']
+  OCC_TYPES_RATIO: [0.7, 0.1]
+  PATCH_ALIGN_OCC: True
+  OCC_RATIO: [0.25, 0.35]
+  OCC_MARGIN: 0.2
+  OCC_ULRD: [0.0, 0.1, 0.1, 0.8]
+  OCC_ALIGN_BOUND: False
+  PRETEXT: 'feat'
+  BRANCH_BLOCKS: 0
+  USE_DECODER_FEAT: 'glb_n_loc'
+  DIST_TRAIN: False
+  OCC_AWARE: True
+  FIX_ALPHA: 0.5
+  OCC_AUG: False
+  IFRC: True
+  EXTRA_OCC_BLOCKS: 3
+  qkv_bias: True
+  mlp_ratio: 4
+  depth: 12
+  embed_dim: 768
+  TWO_BRANCHED: True
+  HEAD_ENHANCE: True
+  HEAD_SUP: True
+  SAMPLE_HEAD_SUP: False
+  HEAD_DIV_LOSS_WEIGHT: 0.1
+  IFRC_HEAD_NUM: 12
+
+ENCODER:
+  num_layers: 12
+  mlp_dim: 768
+  num_heads: 12
+  attention_dropout_rate: 0.1
+
+MOE:
+  layers: [5,8,11]   # 需要替换为Moe的层（范围0到11，即0到depth-1）
+  num_experts: 3
+  group_size: 4
+  router:
+    num_selected_experts: 2
+    noise_std: 1e-3
+    importance_loss_weight: 0.02
+    load_loss_weight: 0.02
+    # capacity_factor: 1.5
+    # capacity: 2
+    dispatcher:
+      name: einsum
+      capacity: 2
+      batch_priority: false
+      bfloat16: false
+
+
+INPUT:
+  SIZE_TRAIN: [256, 128]
+  SIZE_TEST: [256, 128]
+  PROB: 0.5 # random horizontal flip
+  RE_PROB: 0.5 # random erasing
+  PADDING: 10
+  PIXEL_MEAN: [0.5, 0.5, 0.5]
+  PIXEL_STD: [0.5, 0.5, 0.5]
+  OCC_TYPE: 'instance_mask'
+  OCC_TYPES: ['instance_mask', 'img_block']
+  OCC_TYPES_RATIO: [0.7, 0.1]
+   # zzw
+  AUG_TYPES: ['occlusion']
+
+DATASETS:
+  NAMES: ('occ_duke')
+  ROOT_DIR: ('/data/zht/learn_pytorch/megaz-reid-master/megaz-reid-master/data')
+
+DATALOADER:
+  SAMPLER: 'softmax_triplet'
+  NUM_INSTANCE: 4   # 默认设置4
+  NUM_WORKERS: 8 # 默认设置8
+
+SOLVER:
+  OPTIMIZER_NAME: 'SGD'
+  MAX_EPOCHS: 500
+  BASE_LR: 0.016
+  IMS_PER_BATCH: 64
+  WARMUP_METHOD: 'linear'
+  LARGE_FC_LR: False
+  CHECKPOINT_PERIOD: 10
+  LOG_PERIOD: 50
+  EVAL_PERIOD: 5
+  WEIGHT_DECAY:  1e-4
+  WEIGHT_DECAY_BIAS: 1e-4
+  BIAS_LR_FACTOR: 2
+  OCC_PRED_FROZEN: 60
+
+TEST:
+  EVAL: True
+  IMS_PER_BATCH: 256
+  RE_RANKING: False
+  WEIGHT: './weights/occduke_4-11_729.pth'
+  NECK_FEAT: 'before'
+  FEAT_NORM: 'yes'
+  USE_FEAT: 'dec'
+
+OUTPUT_DIR: '/data/zht/learn_pytorch/megaz-reid-master/megaz-reid-master/output/moe/327'
+
+
+
+2025-03-27 06:21:56,726 transreid INFO: Running with config:
+DATALOADER:
+  NUM_INSTANCE: 4
+  NUM_WORKERS: 8
+  SAMPLER: softmax_triplet
+DATASETS:
+  NAMES: occ_duke
+  ROOT_DIR: /data/zht/learn_pytorch/megaz-reid-master/megaz-reid-master/data
+ENCODER:
+  attention_dropout_rate: 0.1
+  mlp_dim: 768
+  num_heads: 12
+  num_layers: 12
+INPUT:
+  AUG_TYPES: ['occlusion']
+  OCC_TYPE: instance_mask
+  OCC_TYPES: ['instance_mask', 'img_block']
+  OCC_TYPES_RATIO: [0.7, 0.1]
+  PADDING: 10
+  PIXEL_MEAN: [0.5, 0.5, 0.5]
+  PIXEL_STD: [0.5, 0.5, 0.5]
+  PROB: 0.5
+  RE_PROB: 0.5
+  SEG_CFG: COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_1x.yaml
+  SIZE_TEST: [256, 128]
+  SIZE_TRAIN: [256, 128]
+MODEL:
+  ATT_DROP_RATE: 0.0
+  BRANCH_BLOCKS: 0
+  COS_LAYER: False
+  DEVICE: cuda
+  DEVICE_ID: 2
+  DEVIDE_LENGTH: 4
+  DIST_TRAIN: False
+  DROP_OUT: 0.0
+  DROP_PATH: 0.1
+  EXTRA_OCC_BLOCKS: 3
+  FIX_ALPHA: 0.5
+  HEAD_DIV_LOSS_WEIGHT: 0.1
+  HEAD_ENHANCE: True
+  HEAD_SUP: True
+  ID_LOSS_TYPE: softmax
+  ID_LOSS_WEIGHT: 1.0
+  IFRC: True
+  IFRC_HEAD_NUM: 12
+  IFRC_LOSS_TYPE: l2dist
+  IFRC_LOSS_WEIGHT: 0.01
+  IFRC_TARGET: feat
+  IF_LABELSMOOTH: off
+  IF_WITH_CENTER: no
+  JPM: True
+  LAST_STRIDE: 1
+  METRIC_LOSS_TYPE: triplet
+  NAME: transformer
+  NECK: bnneck
+  NO_MARGIN: True
+  OCC_ALIGN_BOUND: False
+  OCC_ALIGN_BTM: False
+  OCC_AUG: False
+  OCC_AWARE: True
+  OCC_LOSS_WEIGHT: 1.0
+  OCC_MARGIN: 0.2
+  OCC_RATIO: [0.25, 0.35]
+  OCC_TYPE: instance_mask
+  OCC_TYPES: ['instance_mask', 'img_block']
+  OCC_TYPES_RATIO: [0.7, 0.1]
+  OCC_ULRD: [0.0, 0.1, 0.1, 0.8]
+  PATCH_ALIGN_OCC: True
+  PRETEXT: feat
+  PRETRAIN_CHOICE: imagenet
+  PRETRAIN_PATH: /data1/zht/Models/TransReid/jx_vit_base_p16_224-80ecf9dd.pth
+  RE_ARRANGE: True
+  SAMPLE_HEAD_SUP: False
+  SHIFT_NUM: 5
+  SHUFFLE_GROUP: 2
+  SIE_CAMERA: True
+  SIE_COE: 3.0
+  SIE_VIEW: False
+  STRIDE_SIZE: [16, 16]
+  TRANSFORMER_TYPE: vit_base_patch16_224_TransReID
+  TRIPLET_LOSS_WEIGHT: 1.0
+  TWO_BRANCHED: True
+  USE_DECODER_FEAT: glb_n_loc
+  ZZWEXP: True
+  depth: 12
+  embed_dim: 768
+  mlp_ratio: 4
+  moeocc_LOSS_WEIGHT: 1.0
+  moeori_LOSS_WEIGHT: 1.0
+  qkv_bias: True
+MOE:
+  group_size: 4
+  layers: [5, 8, 11]
+  num_experts: 3
+  router:
+    dispatcher:
+      batch_priority: False
+      bfloat16: False
+      capacity: 2
+      name: einsum
+    importance_loss_weight: 0.02
+    load_loss_weight: 0.02
+    noise_std: 0.001
+    num_selected_experts: 2
+OUTPUT_DIR: /data/zht/learn_pytorch/megaz-reid-master/megaz-reid-master/output/moe/327
+SOLVER:
+  BASE_LR: 0.016
+  BIAS_LR_FACTOR: 2
+  CENTER_LOSS_WEIGHT: 0.0005
+  CENTER_LR: 0.5
+  CHECKPOINT_PERIOD: 10
+  COSINE_MARGIN: 0.5
+  COSINE_SCALE: 30
+  EVAL_PERIOD: 5
+  GAMMA: 0.1
+  IMS_PER_BATCH: 64
+  LARGE_FC_LR: False
+  LOG_PERIOD: 50
+  MARGIN: 0.3
+  MAX_EPOCHS: 500
+  MOMENTUM: 0.9
+  OCC_PRED_FROZEN: 60
+  OPTIMIZER_NAME: SGD
+  SEED: 1234
+  STEPS: (40, 70)
+  WARMUP_EPOCHS: 5
+  WARMUP_FACTOR: 0.01
+  WARMUP_METHOD: linear
+  WEIGHT_DECAY: 0.0001
+  WEIGHT_DECAY_BIAS: 0.0001
+TEST:
+  EVAL: True
+  FEAT_NORM: yes
+  IMS_PER_BATCH: 256
+  NECK_FEAT: before
+  RE_RANKING: False
+  USE_FEAT: dec
+  WEIGHT: ./weights/occduke_4-11_729.pth

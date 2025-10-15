@@ -1,0 +1,49 @@
+# config.yml
+model:
+  img_size: [256, 128]
+  patch_size: 16
+  stride_size: 16
+  embed_dim: 768
+  depth: 12
+  num_heads: 12
+  mlp_ratio: 4
+  qkv_bias: true
+  camera: 0
+  view: 0
+  drop_path_rate: 0.1
+  drop_rate: 0.0
+  attn_drop_rate: 0.0
+  sie_xishu: 1.5
+  local_feature: false
+  occ_aware: true
+  occ_block_depth: 3
+  norm_layer:
+    _target_: torch.nn.LayerNorm
+    eps: 1e-6
+
+encoder:
+  num_layers: 12
+  mlp_dim: 8
+  num_heads: 12
+  attention_dropout_rate: 0.1
+
+moe:
+  layers: [3, 6, 9]
+  num_experts: 4
+  group_size: 4
+  router:
+    num_selected_experts: 1
+    noise_std: 1e-3
+    importance_loss_weight: 0.02
+    load_loss_weight: 0.02
+    dispatcher:
+      name: einsum
+      capacity: 2
+      batch_priority: false
+      bfloat16: false
+
+training:
+  batch_size: 8
+  channels: 3
+  height: 256
+  width: 128
