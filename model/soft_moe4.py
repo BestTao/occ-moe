@@ -4,7 +4,7 @@ from typing import Callable
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from .fast_softmoe_layer import MultiExpertLayer
+from .MElayer import MultiExpertLayer
 from einops import rearrange
 from typing import Callable, Optional, Tuple, Union
 from timm.layers import DropPath
@@ -270,7 +270,7 @@ class SoftMoELayerWrapper(nn.Module):
             layer_scale=kwargs.get('layer_scale', False),
             freeze_moe=kwargs.get('freeze_moe', False),
             )
-        
+     
         self.moe_logits_drop = moe_logits_drop
         self.expert_drop = DropPath(moe_drop_path_rate) if moe_drop_path_rate > 0. else nn.Identity()
 
