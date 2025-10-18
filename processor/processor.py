@@ -16,8 +16,6 @@ from log_handler import log_config
 from augmentation.augmentation_types import AugmentationType
 
 
-# 注意，带有 save_images 的均被注释掉了，正式使用不能注释
-
 def patchify(imgs):
 	"""
 	imgs: (N, 3, H, W)
@@ -689,125 +687,6 @@ def do_train(cfg,
 					json_logger.append_state({"MAX_Rank-1": max_rank1})
 				json_logger.append_state({"Rank-1": float(cmc[0]), "Rank-5": float(cmc[4]), "Rank-10": float(cmc[9]), \
 				                          "mAP": float(mAP)}, dump=True)
-
-
-# def do_inference(cfg,
-#                  model,
-#                  val_loader,
-#                  val_dataset,
-#                  num_query):
-# 	device = "cuda"
-# 	# log_json = False
-# 	attn_hook = True
-# 	logger = logging.getLogger("transreid.train")
-# 	if log_config.ENABLE and (not cfg.MODEL.DIST_TRAIN or dist.get_rank() == 0):
-# 		json_logger = JsonLogger(cfg=cfg)
-# 	logger.info("Enter inferencing")
-# 	evaluator = R1_mAP_eval(num_query, max_rank=50, feat_norm=cfg.TEST.FEAT_NORM)
-# 	evaluator.reset()
-# 	attns = []
-
-# 	if device:
-# 		if torch.cuda.device_count() > 1:
-# 			print('Using {} GPUs for inference'.format(torch.cuda.device_count()))
-# 			model = nn.DataParallel(model)
-# 		model.to(device)
-
-# 	model.eval()
-# 	img_path_list = []
-
-# 	# append hook
-# 	modules = {}
-
-# 	def get_attn(module, input, output):
-# 		attns.append(output.cpu())
-
-# 	for name, module in model.named_modules():
-# 		if attn_hook and 'attn_drop' in name and not 'occ_block' in name:
-# 			module.register_forward_hook(get_attn)
-# 			modules[name] = module
-
-# 	for n_iter, (img, pid, camid, camids, target_view, imgpath) in enumerate(val_loader):
-# 		attns = []
-# 		with torch.no_grad():
-# 			img = img.to(device)
-# 			camids = camids.to(device)
-# 			target_view = target_view.to(device)
-# 			feat, occ_pred,_,all_moe_data = model(img, cam_label=camids, view_label=target_view)
-# 			evaluator.update((feat, pid, camid))
-# 			if log_config.ENABLE and n_iter == 0:
-# 				json_logger.save_images(img, 0, '-o', prefix='query')
-# 				if attn_hook:
-# 					attn_mask = rollout(attns[:12], discard_ratio=0.5, head_fusion='mean')
-# 					json_logger.visualize_attn(img, attn_mask, 0, '-o', prefix='query')
-# 				if cfg.MODEL.OCC_AWARE:
-# 					occ_map = visualize_occ_pred(occ_pred)
-# 					json_logger.save_images(occ_map, 0, '-occ', prefix='query')
-#                 # 新增：可视化MoE专家注意力和贡献
-# 				if all_moe_data is not None and isinstance(all_moe_data, list):
-# 					# 获取模型配置参数
-# 					try:
-# 						core_experts = model.base.core_experts
-# 					except:
-# 						core_experts = 32
-# 						print(f"使用默认核心专家数量: {core_experts}")
-# 					print(f"找到 {len(all_moe_data)} 层MoE数据")
-# 					# 遍历所有MoE层
-# 					for layer_idx, layer_data in enumerate(all_moe_data):
-# 						# 确保layer_data是字典
-# 						if not isinstance(layer_data, dict):
-# 							print(f"警告: 跳过无效的MoE数据类型: {type(layer_data)}")
-# 							continue
-                            
-# 						print(f"处理第 {layer_idx} 层MoE数据")
-						
-# 						# 可视化专家注意力
-# 						expert_attentions = layer_data.get('expert_attentions')
-# 						if expert_attentions is not None:
-# 							json_logger.visualize_expert_attention(
-# 								img, 
-# 								expert_attentions, 
-# 								0, 
-# 								f'-layer{layer_idx}', 
-# 								prefix='query_expert_attn'
-# 							)
-# 						else:
-# 							print("  警告: 此层无专家注意力数据")
-# 						# 可视化专家贡献
-# 						expert_contributions = layer_data.get('expert_contributions')
-# 						if expert_contributions is not None:
-# 							print(f"  专家贡献数据形状: {expert_contributions.shape}")
-# 							json_logger.visualize_expert_contributions(
-# 								expert_contributions, 
-# 								0, 
-# 								f'-layer{layer_idx}',
-# 								core_experts=core_experts
-# 							)
-
-# 			if cfg.DATASETS.NAMES == 'occ_reid':
-# 				imgpath_ = [p[:3] + "/" + p for p in imgpath]
-# 				img_path_list.extend(imgpath_)
-# 			else:
-# 				img_path_list.extend(imgpath)
-
-# 	cmc, mAP, _, _, _, _, _, idx5 = evaluator.compute()
-# 	evaluator.save_npy("no_inf")
-# 	# evaluator.draw_tsne_fig(8, 20, "./figs/tsne.jpg")
-# 	logger.info("Validation Results ")
-# 	logger.info("mAP: {:.1%}".format(mAP))
-# 	for r in [1, 5, 10]:
-# 		logger.info("CMC curve, Rank-{:<3}:{:.1%}".format(r, cmc[r - 1]))
-
-# 	# if cfg.DATASETS.NAMES == 'occ_duke':
-# 	# 	ds = DataStat(set="query")
-# 	# 	ds.summarize(idx5, img_path_list)
-
-# 	assert idx5.shape[0] == num_query, "test error"
-# 	if log_config.ENABLE:
-# 		json_logger.append_state({"Rank-1": float(cmc[0]), "Rank-5": float(cmc[4]), "Rank-10": float(cmc[9]), \
-# 		                          "mAP": float(mAP)}, dump=True, new_epoch=True)
-# 		json_logger.visualize_matches(idx5, val_dataset, img_path_list)
-# 	return cmc[0], cmc[4]
 
 def do_inference(cfg,
                  model,
